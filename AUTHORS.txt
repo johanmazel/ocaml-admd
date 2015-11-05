@@ -1,0 +1,8 @@
+(* OASIS_START *)
+(* DO NOT EDIT (digest: be1820c8f664abb615c59811d23b8513) *)
+
+Authors of admd:
+
+* Johan Mazel
+
+(* OASIS_STOP *)
