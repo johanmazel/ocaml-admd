@@ -1,0 +1,13 @@
+# OASIS_START
+# DO NOT EDIT (digest: b97a6b05f892db9a6e8ce4dee4c885c4)
+version = "0.1"
+description = "A pure OCaml library to read and write Admd XML files."
+requires =
+"core core_extended batteries xmlm xml-light ipaddr threads comparelib sexplib bin_prot"
+archive(byte) = "admd.cma"
+archive(byte, plugin) = "admd.cma"
+archive(native) = "admd.cmxa"
+archive(native, plugin) = "admd.cmxs"
+exists_if = "admd.cma"
+# OASIS_STOP
+
