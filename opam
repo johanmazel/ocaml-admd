@@ -3,14 +3,18 @@ name: "ocaml-admd"
 maintainer: "johan.mazel@gmail.com"
 license: ""
 build: [
-  ["oasis" "setup"]
+#  ["oasis" "setup"]
   ["ocaml" "setup.ml" "-configure"]
   ["ocaml" "setup.ml" "-build"]
 ]
-remove: [
-  ["ocaml" "setup.ml" "-uninstall"]
-  ["ocaml" "setup.ml" "-distclean"]
+install: [
+  ["ocaml" "setup.ml" "-install"]
 ]
+#remove: [
+#  ["ocaml" "setup.ml" "-uninstall"]
+#  ["ocaml" "setup.ml" "-distclean"]
+#]
+remove: [["ocamlfind" "remove" "ocaml-admd"]]
 #depends: [
 #  "ocamlfind" {>= "1.5.3"}
 #]
