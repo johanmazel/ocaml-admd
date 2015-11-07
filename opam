@@ -1,7 +1,11 @@
 opam-version: "0.1"
 name: "ocaml-admd"
+authors: "Johan Mazel"
 maintainer: "johan.mazel@gmail.com"
-license: ""
+license: "GPL3"
+homepage: "https://github.com/johanmazel/ocaml-admd"
+dev-repo: "https://github.com/johanmazel/ocaml-admd.git"
+bug-reports: "https://github.com/johanmazel/ocaml-admd/issues"
 build: [
 #  ["oasis" "setup"]
   ["ocaml" "setup.ml" "-configure"]
@@ -14,7 +18,7 @@ install: [
 #  ["ocaml" "setup.ml" "-uninstall"]
 #  ["ocaml" "setup.ml" "-distclean"]
 #]
-remove: [["ocamlfind" "remove" "ocaml-admd"]]
+remove: [["ocamlfind" "remove" "admd"]]
 #depends: [
 #  "ocamlfind" {>= "1.5.3"}
 #]
