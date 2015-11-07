@@ -1,5 +1,6 @@
 opam-version: "0.1"
 name: "ocaml-admd"
+version: "0.1"
 authors: "Johan Mazel"
 maintainer: "johan.mazel@gmail.com"
 license: "GPL3"
