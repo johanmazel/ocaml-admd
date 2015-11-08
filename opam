@@ -8,17 +8,13 @@ homepage: "https://github.com/johanmazel/ocaml-admd"
 dev-repo: "https://github.com/johanmazel/ocaml-admd.git"
 bug-reports: "https://github.com/johanmazel/ocaml-admd/issues"
 build: [
-#  ["oasis" "setup"]
+  ["oasis" "setup"]
   ["ocaml" "setup.ml" "-configure"]
   ["ocaml" "setup.ml" "-build"]
 ]
 install: [
   ["ocaml" "setup.ml" "-install"]
 ]
-#remove: [
-#  ["ocaml" "setup.ml" "-uninstall"]
-#  ["ocaml" "setup.ml" "-distclean"]
-#]
 remove: [["ocamlfind" "remove" "admd"]]
 #depends: [
 #  "ocamlfind" {>= "1.5.3"}
