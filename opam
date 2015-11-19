@@ -18,6 +18,7 @@ install: [
 remove: [["ocamlfind" "remove" "admd"]]
 depends: [
   "ocamlfind"
+  "oasis"
   "batteries"
   "core"
   "xmlm"
