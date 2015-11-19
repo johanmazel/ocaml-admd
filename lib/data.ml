@@ -763,9 +763,9 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
     let of_filename
         filter_description_lines
 
-        date_format_string
-        ?default_hour_minute_second
-        time_format_string
+        (* date_format_string *)
+        (* ?default_hour_minute_second *)
+        (* time_format_string *)
 
         parallelization_mode
 
