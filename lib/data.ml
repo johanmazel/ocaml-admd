@@ -71,8 +71,8 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
       {
         indice : int;
 
-        date : Core.Date.t;
-        time : Core.Time.t;
+        (* date : Core.Date.t; *)
+        (* time : Core.Time.t; *)
 
         anomaly_type : Anomaly_type.t;
         anomaly_value : Anomaly_value.t;
@@ -90,8 +90,8 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
     let new_t
         indice
 
-        date
-        time
+        (* date *)
+        (* time *)
 
         anomaly_type
         anomaly_value
@@ -105,8 +105,8 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
       {
         indice;
 
-        date;
-        time;
+        (* date; *)
+        (* time; *)
 
         anomaly_type;
         anomaly_value;
@@ -117,48 +117,6 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
         start_time;
         end_time;
       }
-
-    (* let to_string to_string_mode t = *)
-    (* match to_string_mode with *)
-    (* | To_string_mode.Command -> *)
-    (*   sprintf *)
-    (*     "%d %s %s\n%s" *)
-    (*     t.indice *)
-
-    (*     (Anomaly_type.to_string t.anomaly_type) *)
-    (*     (Anomaly_value.to_string t.anomaly_value) *)
-
-    (*     (Utils_batteries.to_string_list *)
-    (*        (Slice.to_string to_string_mode) *)
-    (*        t.slice_list) *)
-    (* | To_string_mode.Simple -> *)
-    (*   sprintf *)
-    (*     "%d %s %s\n%s" *)
-    (*     t.indice *)
-
-    (*     (Anomaly_type.to_string t.anomaly_type) *)
-    (*     (Anomaly_value.to_string t.anomaly_value) *)
-
-    (*     (Utils_batteries.to_string_list *)
-    (*        (Slice.to_string to_string_mode) *)
-    (*        t.slice_list) *)
-    (* | To_string_mode.Normal -> *)
-    (*   sprintf *)
-    (*     "%d %s %s\n%s\n%s\n%d %d" *)
-    (*     t.indice *)
-
-    (*     (Anomaly_type.to_string t.anomaly_type) *)
-    (*     (Anomaly_value.to_string t.anomaly_value) *)
-    (*     (match  t.anomaly_description_option with *)
-    (*     | None -> "No description" *)
-    (*     | Some anomaly_description -> Anomaly_description.to_string To_string_mode.Normal anomaly_description *)
-    (*     ) *)
-    (*     (Utils_batteries.to_string_list *)
-    (*        (Slice.to_string to_string_mode) *)
-    (*        t.slice_list) *)
-
-    (*     t.start_time *)
-    (*     t.end_time *)
 
     let to_string t =
       sprintf
@@ -182,12 +140,9 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
     let of_xml
         filter_description_lines
 
-        (* reference_setting_container *)
-        (* reference_detector_setting_container *)
-        (* data_for_value_of_string *)
-
-        date
-        time
+        (* date *)
+        (* time *)
+        
         indice
         xml
       =
@@ -223,8 +178,7 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
 
       debug
         "Anomaly: of_xml: children_list:\n\n%s\n"
-        (* (Utils_batteries.to_string_list *)
-        (Xml_utils.to_string_list
+        (List_ext.to_string
            ~sep: "\n"
            Myxml.to_string
            children_list
@@ -400,8 +354,9 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
 
       new_t
         indice
-        date
-        time
+        
+        (* date *)
+        (* time *)
 
         anomaly_type
         anomaly_value
@@ -762,8 +717,8 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
       {
         filename : string;
 
-        date : Core.Date.t;
-        time : Core.Time.t;
+        (* date : Core.Date.t; *)
+        (* time : Core.Time.t; *)
 
         algorithm_option : Algorithm.t option;
         analysis_option : Analysis.t option;
@@ -783,8 +738,8 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
     let new_t
         filename
 
-        date
-        time
+        (* date *)
+        (* time *)
 
         algorithm_option
         analysis_option
@@ -795,8 +750,8 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
       {
         filename;
 
-        date;
-        time;
+        (* date; *)
+        (* time; *)
 
         algorithm_option;
         analysis_option;
@@ -825,62 +780,48 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
 
         debug "Admd_file: of_filename: %s" file_path;
 
-        let file_name = Filename.basename file_path in
+        (* let file_name = Filename.basename file_path in *)
 
-        (* let file_MAWI_date = String.sub file_name 0 12 in *)
+        (* debug *)
+        (*   "get_date: date_format_string: \"%s\"" *)
+        (*   date_format_string; *)
 
-        (* let year = int_of_string (String.sub file_MAWI_date 0 4) in *)
-        (* let month = int_of_string (String.sub file_MAWI_date 4 2) in *)
-        (* let day = int_of_string (String.sub file_MAWI_date 6 2) in *)
-
-        debug
-          "get_date: date_format_string: \"%s\""
-          date_format_string;
-
-        let (year, month, day) = 
-          Scanf.sscanf
-            file_name
-            (Scanf.format_from_string date_format_string "%d%d%d%s")
-            (fun year month day (string : string) (test : int list) -> (year, month, day))
-            [] 
-        in
-
-        let date =
-          Core.Date.create_exn
-            year
-            (Core.Month.of_int_exn month)
-            day
-        in
-
-        (* let (year, month, day, hour, minute, second) =  *)
+        (* let (year, month, day) =  *)
         (*   Scanf.sscanf *)
         (*     file_name *)
-        (*     (Scanf.format_from_string time_format_string "%d%d%d%d%d%d%s") *)
-        (*     (fun year month day hour minute second (string : string) (test : int list) -> (year, month, day, hour, minute, second)) *)
+        (*     (Scanf.format_from_string date_format_string "%d%d%d%s") *)
+        (*     (fun year month day (string : string) (test : int list) -> (year, month, day)) *)
         (*     []  *)
         (* in *)
 
-        let year, month, day, hour, minute, second =
-          Extract_time_from_filename.run
-            ?default_hour_minute_second
-            time_format_string
-            file_path
-        in
+        (* let date = *)
+        (*   Core.Date.create_exn *)
+        (*     year *)
+        (*     (Core.Month.of_int_exn month) *)
+        (*     day *)
+        (* in *)
 
-        let ofday =
-          Core.Ofday.create
-            ~hr: hour
-            ~min: minute
-            ~sec: second
-            ()
-        in
+        (* let year, month, day, hour, minute, second = *)
+        (*   Extract_time_from_filename.run *)
+        (*     ?default_hour_minute_second *)
+        (*     time_format_string *)
+        (*     file_path *)
+        (* in *)
 
-        let time =
-          Core.Time.of_date_ofday
-            ~zone: Core.Zone.local
-            date
-            ofday
-        in
+        (* let ofday = *)
+        (*   Core.Ofday.create *)
+        (*     ~hr: hour *)
+        (*     ~min: minute *)
+        (*     ~sec: second *)
+        (*     () *)
+        (* in *)
+
+        (* let time = *)
+        (*   Core.Time.of_date_ofday *)
+        (*     ~zone: Core.Zone.local *)
+        (*     date *)
+        (*     ofday *)
+        (* in *)
 
         debug "Admd_file: of_filename: reading file";
 
@@ -995,8 +936,8 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
                      (* reference_detector_setting_container *)
                      (* data_for_value_of_string *)
 
-                     date
-                     time
+                     (* date *)
+                     (* time *)
 
                      (* reference_detector_container         *)
                      (* reference_detector_setting_container *)
@@ -1068,8 +1009,8 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
         new_t
           file_path
 
-          date
-          time
+          (* date *)
+          (* time *)
 
           algorithm_option
           analysis_option
@@ -1172,7 +1113,6 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
          | Some dataset -> Dataset.to_string dataset
         )
         (Anomaly_container.to_string t.anomaly_container)
-
 
   end
 
