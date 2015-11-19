@@ -11,14 +11,9 @@ Library admd
   Pack:          true
   Path:          lib/
   Findlibname:   admd
-#  BuildTools:    ocamlbuild
   Modules:       Data,
                  Instantiation,
                  Debug,
-#                 Detector,
-#                 Detector_container,
-#                 Detector_setting,
-#                 Detector_setting_container,
                  Ipaddr_sb,
                  Filter,
                  Filter_criteria,
@@ -32,9 +27,8 @@ Library admd
                  Xml_utils,
                  Xmlm_utils,
                  Extract_time_from_filename
-  BuildDepends:  core,
-                 core_extended,
-                 batteries,
+  BuildDepends:  batteries,
+                 core,               
                  xmlm,
                  xml-light,
                  ipaddr,
@@ -45,13 +39,3 @@ Library admd
                  sexplib.syntax,
                  bin_prot,
                  bin_prot.syntax
-  XMETARequires: core,
-                 core_extended,
-                 batteries,
-                 xmlm,
-                 xml-light,
-                 ipaddr,
-                 threads,
-                 comparelib,
-                 sexplib,
-                 bin_prot
