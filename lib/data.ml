@@ -560,7 +560,7 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
     (*     (\* assert(false) *\) *)
     (*   ); *)
 
-    let match_flow
+    let match_flow_data
         timestamp_sec_start
         timestamp_usec_start
         timestamp_sec_end
@@ -572,7 +572,10 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
         proto
         src_port
         dst_port
-        t
+        
+        slice_list
+        start_time
+        end_time
       =
       (* let timestamp_ok = (timestamp_sec_end > t.start_time) && (timestamp_sec_start < t.end_time) in *)
 
@@ -614,14 +617,14 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
 
       let final_result =
         if match_timestamps then
-          let timestamp_ok = (timestamp_sec_end >= t.start_time) && (timestamp_sec_start <= t.end_time) in
+          let timestamp_ok = (timestamp_sec_end >= start_time) && (timestamp_sec_start <= end_time) in
 
           if timestamp_ok then
-            check_slice t.slice_list
+            check_slice slice_list
           else
             false
         else
-          check_slice t.slice_list
+          check_slice slice_list
       in
 
       (* if final_result_if <> final_result then *)
@@ -640,6 +643,38 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
       (*   ); *)
 
       final_result
+
+    let match_flow 
+        timestamp_sec_start
+        timestamp_usec_start
+        timestamp_sec_end
+        timestamp_usec_end
+        match_timestamps
+        (* nb_packets *)
+        src_ip
+        dst_ip
+        proto
+        src_port
+        dst_port
+        
+        t
+      =
+      match_flow_data
+        timestamp_sec_start
+        timestamp_usec_start
+        timestamp_sec_end
+        timestamp_usec_end
+        match_timestamps
+        (* nb_packets *)
+        src_ip
+        dst_ip
+        proto
+        src_port
+        dst_port
+        
+        t.slice_list
+        t.start_time
+        t.end_time
 
     (* let to_five_tuple_flow_list t = *)
     (*   List.map *)
