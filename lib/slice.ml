@@ -44,8 +44,8 @@ let new_t
 
 let to_string t =
   sprintf
-    "slice:\n%s"
-    (* (Utils_batteries.to_string_list *)
+    "%s"
+    (* "slice:\n%s" *)
     (Xml_utils.to_string_list
        ~sep: "\n"
        Filter.to_string
