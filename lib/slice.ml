@@ -45,8 +45,7 @@ let new_t
 let to_string t =
   sprintf
     "%s"
-    (* "slice:\n%s" *)
-    (Xml_utils.to_string_list
+    (List_ext.to_string
        ~sep: "\n"
        Filter.to_string
        t.filter_list)
