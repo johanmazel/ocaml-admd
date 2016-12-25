@@ -11,7 +11,7 @@ type t =
     analyst : string;
     organization : string;
   }
-with compare, bin_io
+[@@deriving compare, bin_io]
 
 let new_t
     description

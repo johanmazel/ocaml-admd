@@ -26,5 +26,9 @@ depends: [
   "xml-light"
   "ipaddr"
 
+  "ppx_compare"
+  "ppx_sexp_conv"
+  "ppx_bin_prot"
+
   "ocaml-jl"
 ]

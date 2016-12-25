@@ -32,14 +32,9 @@ Library admd
                  xml-light,
                  ipaddr,
                  threads,
-                 comparelib,
-                 comparelib.syntax,
-#                 sexplib,
-#                 sexplib.syntax,
-#                 bin_prot,
-#                 bin_prot.syntax,
-                 pa_sexp_conv,
-                 pa_bin_prot,
+                 ppx_compare,
+                 ppx_sexp_conv,
+                 ppx_bin_prot,
 
                  jl
 

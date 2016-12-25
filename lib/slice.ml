@@ -28,7 +28,7 @@ type t =
     start_time_option : int option;
     end_time_option : int option;
   }
-with compare, sexp, bin_io
+[@@deriving compare, sexp, bin_io]
 
 let new_t
     filter_list

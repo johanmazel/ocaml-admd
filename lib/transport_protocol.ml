@@ -13,7 +13,7 @@ type t =
 | ICMPv6
 | GRE
 (* | Other *)
-with compare, sexp, bin_io
+[@@deriving compare, sexp, bin_io]
 
 (* include Core.Comparable.Make( *)
 (*     struct type t = t *)

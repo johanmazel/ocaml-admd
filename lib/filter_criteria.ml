@@ -10,7 +10,7 @@ type t =
   | Transport_protocol of Transport_protocol.t
   | Src_port of int
   | Dst_port of int
-with compare, sexp, bin_io
+[@@deriving compare, sexp, bin_io]
 
 let to_string
     t

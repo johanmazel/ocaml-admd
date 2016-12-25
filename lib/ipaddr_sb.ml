@@ -5,7 +5,7 @@ open Bin_prot.Std
 type t =
   | V4 of int32
   | V6 of int32 * int32 * int32 * int32
-with sexp, bin_io
+[@@deriving sexp, bin_io]
 
 let (&&&) x y = Int32.logand x y
 let (>|>) x y = Int32.shift_right_logical x y

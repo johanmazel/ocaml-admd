@@ -12,7 +12,7 @@ type t =
   {
     filter_criteria_list : Filter_criteria.t list;
   }
-with compare, sexp, bin_io
+[@@deriving compare, sexp, bin_io]
 
 let new_t
     filter_criteria_list

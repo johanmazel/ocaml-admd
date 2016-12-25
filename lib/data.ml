@@ -85,8 +85,8 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
         start_time : int;
         end_time : int;
       }
-    with compare, sexp, bin_io
-
+    [@@deriving compare, sexp, bin_io]
+    
     let new_t
         indice
 
@@ -694,7 +694,7 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
       {
         anomaly_list : Anomaly.t list;
       }
-    with compare, sexp, bin_io
+    [@@deriving compare, sexp, bin_io]
 
     let new_t
         anomaly_list
@@ -762,13 +762,13 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
         (* admd_anomaly_list : Admd_anomaly.t list; *)
         anomaly_container : Anomaly_container.t;
       }
-    with compare, bin_io
+    [@@deriving compare, bin_io]
 
     type t_list = t list
-    with compare, bin_io
+    [@@deriving compare, bin_io]
 
     type t_list_tuple = t_list * t_list
-    with compare, bin_io
+    [@@deriving compare, bin_io]
 
     let new_t
         filename
