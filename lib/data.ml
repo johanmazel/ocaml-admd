@@ -82,8 +82,10 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
 
         (* start_time : Core.Time.t; *)
         (* end_time : Core.Time.t;   *)
-        start_time : int;
-        end_time : int;
+        start_sec : int;
+        start_usec : int;
+        stop_sec : int;
+        stop_usec : int;
       }
     [@@deriving compare, sexp, bin_io]
     
@@ -99,8 +101,10 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
 
         slice_list
 
-        start_time
-        end_time
+        start_sec
+        start_usec
+        stop_sec
+        stop_usec
       =
       {
         indice;
@@ -114,9 +118,53 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
 
         slice_list;
 
-        start_time;
-        end_time;
+        start_sec;
+        start_usec;
+        stop_sec;
+        stop_usec;
       }
+
+    (* let to_string to_string_mode t = *)
+    (* match to_string_mode with *)
+    (* | To_string_mode.Command -> *)
+    (*   sprintf *)
+    (*     "%d %s %s\n%s" *)
+    (*     t.indice *)
+
+    (*     (Anomaly_type.to_string t.anomaly_type) *)
+    (*     (Anomaly_value.to_string t.anomaly_value) *)
+
+    (*     (Utils_batteries.to_string_list *)
+    (*        (Slice.to_string to_string_mode) *)
+    (*        t.slice_list) *)
+    (* | To_string_mode.Simple -> *)
+    (*   sprintf *)
+    (*     "%d %s %s\n%s" *)
+    (*     t.indice *)
+
+    (*     (Anomaly_type.to_string t.anomaly_type) *)
+    (*     (Anomaly_value.to_string t.anomaly_value) *)
+
+    (*     (Utils_batteries.to_string_list *)
+    (*        (Slice.to_string to_string_mode) *)
+    (*        t.slice_list) *)
+    (* | To_string_mode.Normal -> *)
+    (*   sprintf *)
+    (*     "%d %s %s\n%s\n%s\n%d %d" *)
+    (*     t.indice *)
+
+    (*     (Anomaly_type.to_string t.anomaly_type) *)
+    (*     (Anomaly_value.to_string t.anomaly_value) *)
+    (*     (match  t.anomaly_description_option with *)
+    (*     | None -> "No description" *)
+    (*     | Some anomaly_description -> Anomaly_description.to_string To_string_mode.Normal anomaly_description *)
+    (*     ) *)
+    (*     (Utils_batteries.to_string_list *)
+    (*        (Slice.to_string to_string_mode) *)
+    (*        t.slice_list) *)
+
+    (*     t.start_time *)
+    (*     t.end_time *)
 
     let to_string t =
       sprintf
@@ -134,9 +182,9 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
            Slice.to_string
            t.slice_list)
 
-        t.start_time
-        t.end_time
-
+        t.start_sec
+        t.stop_sec
+        
     let of_xml
         filter_description_lines
 
@@ -168,7 +216,6 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
           (* reference_setting_container *)
           (* reference_detector_setting_container           *)
           (* data_for_value_of_string *)
-         
           anomaly_value_string
       in
 
@@ -291,7 +338,7 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
           assert(false)
         );
       let from_sec = Hashtbl.find from_attribute_hashtable ("","sec") in
-      (* let from_usec = Hashtbl.find from_attribute_hashtable ("","usec") in *)
+      let from_usec = Hashtbl.find from_attribute_hashtable ("","usec") in
 
       (* if from_usec <> 0 then *)
       (*         ( *)
@@ -318,7 +365,7 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
       assert(Hashtbl.mem to_attribute_hashtable ("","sec"));
       assert(Hashtbl.mem to_attribute_hashtable ("","usec"));
       let to_sec = Hashtbl.find to_attribute_hashtable ("","sec") in
-      (* let to_usec = Hashtbl.find to_attribute_hashtable ("","usec") in *)
+      let to_usec = Hashtbl.find to_attribute_hashtable ("","usec") in
 
       (* if to_usec <> 0 then *)
       (*         ( *)
@@ -350,23 +397,29 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
       (*            slice_list *)
       (*         ); *)
 
+      let r : t =
+        new_t
+          indice
+
+          (* date *)
+          (* time *)
+
+          anomaly_type
+          anomaly_value
+          anomaly_description_option
+
+          slice_list
+
+          from_sec
+          from_usec
+          to_sec
+          to_usec
+      in
+
       debug "Anomaly: of_xml: end";
 
-      new_t
-        indice
-        
-        (* date *)
-        (* time *)
-
-        anomaly_type
-        anomaly_value
-        anomaly_description_option
-
-        slice_list
-
-        from_sec
-        to_sec
-
+      r
+      
     let to_xml
         (* admd_anomaly_export_mode *)
         (* description_to_string_mode *)
@@ -410,8 +463,9 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
               ("","from") 
               ,
               [ 
-                (("","sec") , (string_of_int t.start_time));
-                (("","usec") , "0") 
+                (("","sec") , (string_of_int t.start_sec));
+                (* (("","usec") , "0")  *)
+                (("","usec") , (string_of_int t.start_usec));
               ] 
             )
             ,
@@ -425,8 +479,9 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
               ("","to")
               ,
               [ 
-                (("","sec") , (string_of_int t.end_time)); 
-                (("","usec") , "0")
+                (("","sec") , (string_of_int t.stop_sec)); 
+                (* (("","usec") , "0") *)
+                (("","usec") , (string_of_int t.stop_usec)); 
               ] 
             )
             ,
@@ -477,8 +532,16 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
         dst_port_option
         t
       =
-      let timestamp_ok = (timestamp_sec_end > t.start_time) && (timestamp_sec_start < t.end_time) in
-
+      let timestamp_ok =
+        (timestamp_sec_end > t.start_sec)
+        &&
+        (timestamp_usec_end > t.start_usec)
+        &&
+        (timestamp_sec_start < t.stop_sec)
+        &&
+        (timestamp_usec_start < t.stop_usec)
+      in
+      
       (* Note: added for debug of problem with anomaly in 20030101 *)
       (* anomaly type="suspicious" value="1.126000,1.189830,503,0 0 0
          0 0 0 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0" *)
@@ -572,10 +635,12 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
         proto
         src_port
         dst_port
-        
+                
         slice_list
-        start_time
-        end_time
+        start_sec
+        start_usec
+        stop_sec
+        stop_usec
       =
       (* let timestamp_ok = (timestamp_sec_end > t.start_time) && (timestamp_sec_start < t.end_time) in *)
 
@@ -617,7 +682,17 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
 
       let final_result =
         if match_timestamps then
-          let timestamp_ok = (timestamp_sec_end >= start_time) && (timestamp_sec_start <= end_time) in
+          (* let timestamp_ok = (timestamp_sec_end >= t.start_time) && (timestamp_sec_start <= t.end_time) in *)
+          let timestamp_ok =
+            (timestamp_sec_end > start_sec)
+            &&
+            (timestamp_usec_end > start_usec)
+            &&
+            (timestamp_sec_start < stop_sec)
+            &&
+            (timestamp_usec_start < stop_usec)
+          in
+
 
           if timestamp_ok then
             check_slice slice_list
@@ -673,8 +748,11 @@ module Make (Anomaly_type : Anomaly_type) (Anomaly_value : Anomaly_value) (Anoma
         dst_port
         
         t.slice_list
-        t.start_time
-        t.end_time
+        
+        t.start_sec
+        t.start_usec
+        t.stop_sec
+        t.stop_usec
 
     (* let to_five_tuple_flow_list t = *)
     (*   List.map *)
